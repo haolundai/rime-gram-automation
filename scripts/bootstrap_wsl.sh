@@ -7,7 +7,7 @@ sudo apt install -y \
   ca-certificates curl git \
   build-essential cmake \
   python3 python3-venv python3-pip \
-  file ldd \
+  file libc-bin \
   software-properties-common
 
 # Enable Universe (librime1 is commonly in Universe on Ubuntu)

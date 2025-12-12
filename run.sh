@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -eEuo pipefail
-./scripts/doctor.sh
-./train_gram.sh
+bash ./scripts/doctor.sh
+bash ./train_gram.sh

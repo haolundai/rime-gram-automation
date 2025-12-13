@@ -8,12 +8,13 @@ set -euo pipefail
 if [[ -f "$HOME/.rime_gram_config.sh" ]]; then
   # shellcheck disable=SC1090
   source "$HOME/.rime_gram_config.sh"
+echo "[INFO] Loaded MERGE_MIN_FREQ_BY_N=${MERGE_MIN_FREQ_BY_N:-<empty>}"
 fi
 
 : "${CORPUS_WIN_MNT:?Missing CORPUS_WIN_MNT in ~/.rime_gram_config.sh}"
 : "${RIME_TARBALL_WIN_MNT:?Missing RIME_TARBALL_WIN_MNT in ~/.rime_gram_config.sh}"
 : "${WINUSER:?Missing WINUSER in ~/.rime_gram_config.sh}"
-: "${RIME_BUILD_GRAMMAR_REPO:=https://github.com/gaboolic/rime-build-grammar.git}"
+: "${RIME_BUILD_GRAMMAR_REPO:=https://github.com/haolundai/rime-build-grammar.git}"
 
 # ----------------------------
 # 1) Workspace folders
@@ -101,7 +102,8 @@ ls -lah "$LMPLZ"
 # ----------------------------
 # 5) KenLM train: corpus_seg.txt -> my_model.arpa
 # ----------------------------
-"$LMPLZ" -o 6 < "$RUN/corpus_seg.txt" > "$RUN/my_model.arpa"
+"$LMPLZ" -o "${LM_ORDER:-6}" < "$RUN/corpus_seg.txt" > "$RUN/my_model.arpa"
+echo "[INFO] LM_ORDER=${LM_ORDER:-6}"
 ls -lah "$RUN/my_model.arpa"
 tail -n 3 "$RUN/my_model.arpa" || true
 
@@ -152,10 +154,18 @@ cp -av zh-hant.gram "$BK"/ 2>/dev/null || true
 
 cp -av "$RUN/my_model.arpa" "$RBG/my_model.arpa"
 
-python3 arpa.py my_model.arpa my_model.txt > "$RUN/arpa.log" 2>&1
-python3 merge_ngram.py > "$RUN/merge.log" 2>&1
+python3 "$RBG/arpa.py" my_model.arpa my_model.txt > "$RUN/arpa.log" 2>&1
 
-MERGE_FILE="$(ls -t merge_*.txt | head -n 1)"
+echo "[INFO] MERGE_MIN_FREQ_BY_N=${MERGE_MIN_FREQ_BY_N:-}" | tee -a "$RUN/merge.log"
+
+# 確保在 rime-build-grammar 目錄執行，並用絕對路徑呼叫腳本
+pushd "$RBG" >/dev/null
+echo "[INFO] merge_ngram.py path: $(realpath "$RBG/merge_ngram.py")" | tee -a "$RUN/merge.log"
+env MERGE_MIN_FREQ_BY_N="${MERGE_MIN_FREQ_BY_N:-}" python3 -u "$RBG/merge_ngram.py" >> "$RUN/merge.log" 2>&1
+popd >/dev/null
+
+
+MERGE_FILE="${MERGE_FILE_EXACT:-$(ls -t merge_*.txt | head -n 1)}"
 echo "[INFO] MERGE_FILE=$MERGE_FILE"
 ls -lah "$MERGE_FILE"
 

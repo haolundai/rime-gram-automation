@@ -8,3 +8,10 @@ artifacts/
 runs/
 *.arpa
 *.gram
+# local outputs
+my-gram-train/
+artifacts/
+runs/
+**/.venv/
+*.arpa
+*.gram

@@ -25,3 +25,8 @@ bash ./scripts/bootstrap_wsl.sh
 bash ./run.sh
 ```
 
+
+
+# test) 
+# 1-1) 跑乾淨驗證
+bash scripts/clean_verify.sh

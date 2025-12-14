@@ -1,8 +1,8 @@
 # rime-gram-automation
 
-在 WSL Ubuntu 上，盡量用一套固定流程生成 `zh-hant.gram`。
+在 WSL Ubuntu 上，用一套固定流程生成 `zh-hant.gram`。
 
-## 1) git（in WSL）
+## 1) clone
 ```
 cd ~
 git clone https://github.com/haolundai/rime-gram-automation.git
@@ -20,7 +20,7 @@ nano ~/.rime_gram_config.sh
 bash ./scripts/bootstrap_wsl.sh
 ```
 
-## 4) 一鍵執行
+## 4) 執行
 ```
 bash ./run.sh
 ```

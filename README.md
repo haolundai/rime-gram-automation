@@ -27,5 +27,7 @@ bash ./run.sh
 
 
 
-# test 1-1) 跑乾淨驗證
+# test 1-1) 驗證 (Additional)
+```
 bash scripts/clean_verify.sh
+```

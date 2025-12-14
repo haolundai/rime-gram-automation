@@ -15,7 +15,7 @@ cp ./rime_gram_config.example.sh ~/.rime_gram_config.sh
 nano ~/.rime_gram_config.sh
 ```
 
-## 3) 一次性安裝依賴
+## 3) 一次性安裝套件
 ```
 bash ./scripts/bootstrap_wsl.sh
 ```

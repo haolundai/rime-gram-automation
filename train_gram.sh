@@ -44,11 +44,13 @@ ls -lah "$RUN/corpus_all.txt"
 #sudo apt-get update -y
 #sudo apt-get install -y python3-venv python3-pip
 
+command -v git >/dev/null 2>&1 || { echo "[ERR] git is required but not installed. Run 'sudo apt install git' first."; exit 1; }
+
 python3 -m venv "$RUN/.venv"
 # shellcheck disable=SC1090
 source "$RUN/.venv/bin/activate"
 python3 -m pip install -U pip
-pip install jieba
+pip install git+https://github.com/APCLab/jieba-tw.git
 
 cat > "$RUN/seg.py" <<'PY'
 import jieba
